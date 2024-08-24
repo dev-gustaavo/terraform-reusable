@@ -15,9 +15,6 @@ on:
       AWS_SECRET_ACCESS_KEY:
         description: 'AWS Secret Access Key'
         required: true
-      GITHUB_TOKEN:
-        description: 'GitHub Token'
-        required: true
 
 jobs:
   validacao-terraform:
