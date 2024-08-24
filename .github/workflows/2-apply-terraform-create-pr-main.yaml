@@ -22,6 +22,7 @@ on:
 
 jobs:
   apply-terraform:
+    name: "Aplicação do Terraform"
     runs-on: ubuntu-latest
 
     env:
@@ -45,6 +46,7 @@ jobs:
         run: terraform ${{ inputs.terraform_command }} -auto-approve
 
   criacao-pr-main:
+    name: "Criação do PR para branch main"
     runs-on: ubuntu-latest
     needs: apply-terraform
 

@@ -18,6 +18,7 @@ on:
 
 jobs:
   validacao-terraform:
+    name: "Validação do Terraform"
     runs-on: ubuntu-latest
 
     env:
@@ -40,6 +41,7 @@ jobs:
         run: terraform validate
 
   criacao-pr-develop:
+    name: "Criação do PR para branch develop"
     runs-on: ubuntu-latest
     needs: validacao-terraform
 
