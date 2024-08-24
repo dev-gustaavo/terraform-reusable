@@ -37,11 +37,20 @@ jobs:
         with:
           terraform_version: 1.9.3
 
+      - name: Determine Terraform Command
+        id: set-command
+        run: |
+          if [ "$(jq -r '.terraform.apply' aplicacao-infra.json)" == "true" ]; then
+            echo "terraform_command=apply" >> $GITHUB_ENV
+          else
+            echo "terraform_command=destroy" >> $GITHUB_ENV
+          fi
+
       - name: Terraform Init
         run: terraform init
 
       - name: Run Terraform Command
-        run: terraform ${{ inputs.terraform_command }} -auto-approve
+        run: terraform ${{ env.terraform_command }} -auto-approve
 
   criacao-pr-main:
     name: "Criação do PR para branch main"
