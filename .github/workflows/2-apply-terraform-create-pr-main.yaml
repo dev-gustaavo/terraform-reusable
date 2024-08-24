@@ -21,15 +21,36 @@ on:
         required: true
 
 jobs:
+  determine-command:
+    name: "Determine Terraform Command"
+    runs-on: ubuntu-latest
+
+    outputs:
+      terraform_command: ${{ steps.set-command.outputs.terraform_command }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Define Terraform Command
+        id: set-command
+        run: |
+          FLAG=$(jq -r '.terraform.apply' aplicacao-infra.json)
+          if [ "$FLAG" == "true" ]; then
+            echo "terraform_command=apply" >> $GITHUB_ENV
+          else
+            echo "terraform_command=destroy" >> $GITHUB_ENV
+          fi
+          echo "::set-output name=terraform_command::${{ env.terraform_command }}"
+
   apply-terraform:
     name: "Aplicação do Terraform"
     runs-on: ubuntu-latest
-
+    needs: determine-command
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -43,7 +64,7 @@ jobs:
         run: terraform init
 
       - name: Run Terraform Command
-        run: terraform ${{ inputs.terraform_command }} -auto-approve
+        run: terraform ${{ needs.determine-command.outputs.terraform_command }} -auto-approve
 
   criacao-pr-main:
     name: "Criação do PR para branch main"
