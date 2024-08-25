@@ -8,6 +8,13 @@ on:
         required: false
         default: 'develop'
         type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        description: 'AWS Access Key ID'
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        description: 'AWS Secret Access Key'
+        required: true
 
 jobs:
   validacao-terraform:
