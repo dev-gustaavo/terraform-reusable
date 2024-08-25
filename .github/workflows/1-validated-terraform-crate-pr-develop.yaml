@@ -11,10 +11,10 @@ on:
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID'
-        required: true
+        required: false
       AWS_SECRET_ACCESS_KEY:
         description: 'AWS Secret Access Key'
-        required: true
+        required: false
 
 jobs:
   validacao-terraform:
